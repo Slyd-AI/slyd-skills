@@ -13,6 +13,7 @@ Use the bundled client to run the SLYD workflow reliably. Prefer asynchronous jo
 2. Read `SLYD_API_BASE` from the environment, defaulting to `https://slyd.top` only when it is unset.
 3. Run `python <skill-dir>/scripts/slyd_client.py health` before a paid request. Stop if `user_agent_api` or `user_agent_api_queue` is disabled.
 4. Read [references/api.md](references/api.md) before selecting fields, formats, limits, or interpreting an error.
+5. On Windows, use the PowerShell setup in the reference. User-level environment changes require a newly started PowerShell and Agent process; do not claim the key is available until the Agent process can read it.
 
 ## Choose One Mode
 
@@ -28,7 +29,7 @@ Before submitting:
 
 1. Validate that every path exists and its field is supported by the chosen mode.
 2. Determine `target_pages` for `smart_refactor` and `deep_restore` in the allowed 4-30 range.
-3. Summarize the selected mode, source files, target or source slide count, supplemental pages, and the expected points rule.
+3. Summarize the selected mode, source files, target or source slide count, supplemental pages, and the expected points rule. If web search is enabled, explain that verified source appendix slides are added after the requested content slides.
 4. Ask for confirmation unless the user already explicitly approved that exact charged operation in the current request.
 
 Never create a second job after an ambiguous timeout without checking the first job or reusing its idempotency key.
@@ -62,6 +63,14 @@ python <skill-dir>/scripts/slyd_client.py wait agj_xxx --output /absolute/path/s
 The client honors `Retry-After`, waits at least 30 seconds between status checks, downloads the completed file, and validates the PPTX package. On success, return the saved PPTX to the user when the surface supports file attachments, plus `download_url` and `download_expires_at` when useful.
 
 Treat `failed`, `expired`, and `canceled` as terminal. Report `last_error_message` without exposing credentials or internal diagnostics. Do not retry a failed charged conversion without fresh user confirmation.
+
+## Interpret Final Slide Count
+
+Treat `target_pages` as the requested content-slide count, not always the final PPTX count. When `web_search_enabled=true` and verified sources exist, SLYD appends one or more deterministic "智能搜索来源" appendix slides. With the default 16:9 format and normal source volume this is usually one page, so 6 requested content slides can correctly produce a 7-slide PPTX. Source appendix slides are not included in the upfront charged page count.
+
+Do not report a page-count defect, delete the appendix, rerender, or submit another charged job solely because these source slides make the final count exceed `target_pages`. Report the result as content slides plus source appendix slides. Investigate only when web search was disabled, no source appendix exists, or the unexpected slide is not a source page.
+
+If the user requires an absolute final total that includes source slides, explain this behavior before submission and ask whether to disable web search or adjust the content target. Never silently remove attribution or change the paid request.
 
 ## Cancel
 

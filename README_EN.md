@@ -45,7 +45,21 @@ export SLYD_API_BASE='https://slyd.top'
 export SLYD_API_KEY='slyd_sk_xxx'
 ```
 
-Start the Agent from the same terminal. Never paste the API Key into chat or store it in the Skill directory.
+Windows PowerShell users can persist the variables for the current Windows user:
+
+```powershell
+[Environment]::SetEnvironmentVariable("SLYD_API_BASE","https://slyd.top","User")
+[Environment]::SetEnvironmentVariable("SLYD_API_KEY","YOUR_SLYD_API_KEY","User")
+```
+
+User-level variables are read only by newly started processes. Close and reopen PowerShell, then start the Agent from the new terminal. To configure only the current PowerShell session, use:
+
+```powershell
+$env:SLYD_API_BASE = "https://slyd.top"
+$env:SLYD_API_KEY = "YOUR_SLYD_API_KEY"
+```
+
+Never paste the API Key into chat or store it in the Skill directory.
 
 ### 3. Make your first presentation
 
@@ -110,6 +124,7 @@ Cancel SLYD job agj_xxx and report whether it was canceled immediately or is exi
 6. Reuses one `Idempotency-Key` across ambiguous submission retries.
 7. Polls the accepted job instead of submitting duplicates.
 8. Downloads the result promptly and validates the PPTX ZIP structure.
+9. Treats a web-search source appendix as expected extra output instead of deleting slides or rebuilding to force `target_pages`.
 
 ## Points and account capabilities
 
@@ -162,6 +177,12 @@ The idempotency key was reused with different request content, or the job state 
 ### The API returns `429`
 
 Honor `Retry-After`. Continue polling an accepted job; do not resubmit it.
+
+### I requested 6 slides, so why does the PPTX contain 7?
+
+`target_pages` is the target number of content slides. When `web_search_enabled=true` and verified sources are available, SLYD appends one or more "Smart Search Sources" appendix slides. With the default 16:9 format and a normal source count, this is usually one extra slide. Six content slides plus one source appendix slide therefore produces a valid 7-slide PPTX. The appendix is not part of the upfront charged page count.
+
+An Agent must not delete the appendix, rerender, or resubmit only because the final count exceeds `target_pages`. If the user needs a strict final total that includes the appendix, explain the rule before submission and ask whether to disable web search or adjust the content target.
 
 ## Repository layout
 

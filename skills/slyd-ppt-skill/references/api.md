@@ -8,10 +8,11 @@ Use this reference when choosing request fields, validating inputs, estimating p
 2. Modes and permissions
 3. File fields and limits
 4. Generation fields
-5. Asynchronous jobs
-6. Points and confirmation
-7. Errors and retry policy
-8. Download handling
+5. Web search source appendix and final slide count
+6. Asynchronous jobs
+7. Points and confirmation
+8. Errors and retry policy
+9. Download handling
 
 ## Availability and Authentication
 
@@ -33,6 +34,20 @@ Set credentials outside the Agent chat:
 ```bash
 export SLYD_API_BASE='https://slyd.top'
 export SLYD_API_KEY='slyd_sk_xxx'
+```
+
+On Windows PowerShell, persist the values for the current Windows user with:
+
+```powershell
+[Environment]::SetEnvironmentVariable("SLYD_API_BASE","https://slyd.top","User")
+[Environment]::SetEnvironmentVariable("SLYD_API_KEY","YOUR_SLYD_API_KEY","User")
+```
+
+These user-level values are available only to newly started processes. Close and reopen PowerShell, then start the Agent again. To set the values for only the current PowerShell session, use:
+
+```powershell
+$env:SLYD_API_BASE = "https://slyd.top"
+$env:SLYD_API_KEY = "YOUR_SLYD_API_KEY"
 ```
 
 The client uses `X-SLYD-API-Key`. The API also accepts `Authorization: Bearer <key>`.
@@ -89,7 +104,7 @@ All values are multipart text fields.
 
 | Field | Type | Default or range | Applies to |
 |---|---|---|---|
-| `target_pages` | integer | Required, 4-30 | smart refactor, deep restore |
+| `target_pages` | integer | Required, 4-30 content slides | smart refactor, deep restore |
 | `user_requirements` | string | Optional | all modes |
 | `output_language` | string | `zh-CN`; also `en`, `ko`, `ja`, `ru` | all modes |
 | `content_density` | string | `low`, `medium`, `high` | all modes |
@@ -109,6 +124,14 @@ All values are multipart text fields.
 | `supplement_pages` | integer | 0-20 | PPTX beautify only |
 
 Boolean form values should be lowercase `true` or `false`.
+
+## Web Search Source Appendix and Final Slide Count
+
+When `web_search_enabled=true` and SLYD obtains verified sources, the export appends one or more deterministic "智能搜索来源" slides after the generated content. `target_pages` remains the content-slide target and does not include these appendix slides. The source appendix is not included in the upfront charged page count.
+
+With the default 16:9 canvas and the default source limit, the appendix normally occupies one slide. Narrow canvases or a larger source set can require multiple slides. For example, `target_pages=6` plus one source appendix slide produces a correct 7-slide PPTX.
+
+Do not treat this as rendering drift, remove the attribution slides, or resubmit a charged job merely to force the final package back to `target_pages`. If the user requires a strict final total including attribution, decide before submission whether to disable web search or reduce the content-slide target with the user's approval.
 
 ## Asynchronous Jobs
 
