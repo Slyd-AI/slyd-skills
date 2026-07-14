@@ -1,9 +1,9 @@
 ---
-name: slyd-ppt-maker
+name: slyd-ppt-skill
 description: Create, reconstruct, or beautify PowerPoint presentations through the SLYD Agent API from PDF, Word, Markdown, text, images, or existing PPTX files. Use when a user asks an AI agent to make a PPT with SLYD, visually restore source material into editable slides, redesign an existing deck, submit or monitor a SLYD job, or download a generated PPTX.
 ---
 
-# SLYD PPT Maker
+# SLYD PPT Skill
 
 Use the bundled client to run the SLYD workflow reliably. Prefer asynchronous jobs so retries do not create duplicate charged conversions. Resolve `<skill-dir>` to the absolute directory containing this `SKILL.md` before running any command below; do not assume the user's project is the Skill directory.
 

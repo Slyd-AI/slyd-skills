@@ -1,0 +1,7 @@
+interface:
+  display_name: "SLYD PPT Skill"
+  short_description: "Create, restore, and beautify PowerPoint files with SLYD"
+  default_prompt: "Use $slyd-ppt-skill to turn my source files into a polished PowerPoint presentation."
+
+policy:
+  allow_implicit_invocation: true
