@@ -105,7 +105,7 @@ class SlydClient:
         api_key = os.environ.get("SLYD_API_KEY", "").strip()
         if require_key and not api_key:
             raise SlydError(
-                "SLYD_API_KEY is not set. Configure it outside Codex chat before continuing."
+                "SLYD_API_KEY is not set. Configure it outside the Agent chat before continuing."
             )
         return cls(base_url, api_key or None, timeout=timeout)
 

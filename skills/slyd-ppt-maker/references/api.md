@@ -28,7 +28,7 @@ python <skill-dir>/scripts/slyd_client.py health
 
 The health response must report both `feature_flags.user_agent_api=true` and `feature_flags.user_agent_api_queue=true` for the bundled asynchronous client.
 
-Set credentials outside Codex chat:
+Set credentials outside the Agent chat:
 
 ```bash
 export SLYD_API_BASE='https://slyd.top'

@@ -1,6 +1,6 @@
 ---
 name: slyd-ppt-maker
-description: Create, reconstruct, or beautify PowerPoint presentations through the SLYD Agent API from PDF, Word, Markdown, text, images, or existing PPTX files. Use when a user asks Codex to make a PPT with SLYD, visually restore source material into editable slides, redesign an existing deck, submit or monitor a SLYD job, or download a generated PPTX.
+description: Create, reconstruct, or beautify PowerPoint presentations through the SLYD Agent API from PDF, Word, Markdown, text, images, or existing PPTX files. Use when a user asks an AI agent to make a PPT with SLYD, visually restore source material into editable slides, redesign an existing deck, submit or monitor a SLYD job, or download a generated PPTX.
 ---
 
 # SLYD PPT Maker
@@ -79,5 +79,5 @@ If the response remains nonterminal, explain that cancellation was requested and
 - Treat download URLs as temporary bearer links. Avoid placing them in public logs or repositories.
 - Do not claim success until the downloaded file passes PPTX validation.
 - Respect `429` and `Retry-After`; do not increase polling frequency.
-- Use absolute input and output paths so Codex does not write to an unexpected directory.
+- Use absolute input and output paths so the Agent does not write to an unexpected directory.
 - If network access needs approval, request it for the configured SLYD host only.
